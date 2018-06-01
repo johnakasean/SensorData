@@ -1,0 +1,274 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Highcharts Tutorial</title>
+   	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+   	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://dweet.io/client/dweet.io.min.js"></script>
+</head>
+
+<body>
+<div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
+<div id="containerTwo" style="width: 800px; height: 400px; margin: 0 auto"></div>
+<div id="containerThree" style="width: 800px; height: 400px; margin: 0 auto"></div>
+<div id="containerFour" style="width: 800px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+var data = []
+var dataTwo = []
+var dataThree = []
+var dataFour = []
+
+array_for_cats = []
+
+$(document).ready(function() {
+	var name = 'John Cahill'
+
+   var chart = {
+      type: 'spline',
+	  animation: Highcharts.svg, // don't animate in IE < IE 10.
+      marginRight: 10,
+   };
+	 var chartTwo = {
+      type: 'areaspline',
+	  animation: Highcharts.svg, // don't animate in IE < IE 10.
+      marginRight: 10,
+   };
+	 var chartThree = {
+			type: 'bar',
+	 animation: Highcharts.svg, // don't animate in IE < IE 10.
+			marginRight: 10,
+	 };
+	 var chartFour = {
+			type: 'line',
+	 animation: Highcharts.svg, // don't animate in IE < IE 10.
+			marginRight: 10,
+	 };
+   var title = {
+      text: 'Temperature'
+   };
+	 var titleTwo = {
+			text: 'Humidity'
+	 };
+	 var titleThree = {
+			text: 'Ultrasonic'
+	 };
+	 var titleFour = {
+			text: 'LedFade'
+	 };
+   var xAxis = {
+      type: 'datetime',
+      tickPixelInterval: 150
+   };
+   var yAxis = {
+      title: {
+         text: 'Value'
+      },
+      plotLines: [{
+         value: 0,
+         width: 1,
+         color: '#808080'
+      }]
+   };
+	 var yAxisTwo = {
+			title: {
+				 text: 'Value'
+			},
+			plotLines: [{
+				 value: 0,
+				 width: 1,
+				 color: '#808080'
+			}]
+	};
+	var yAxisThree = {
+		 title: {
+				text: 'Value'
+		 },
+		 plotLines: [{
+				value: 0,
+				width: 1,
+				color: '#808080'
+		 }]
+ };
+   var tooltip = {
+      formatter: function () {
+      return '<b>' + this.series.name + '</b><br/>' +
+         Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+         Highcharts.numberFormat(this.y, 2);
+      }
+   };
+   var plotOptions = {
+      area: {
+         pointStart: 1940,
+         marker: {
+            enabled: false,
+            symbol: 'circle',
+            radius: 2,
+            states: {
+               hover: {
+                 enabled: true
+               }
+            }
+         }
+      }
+   };
+   var legend = {
+      enabled: false
+   };
+   var exporting = {
+      enabled: false
+   };
+
+
+   var series = []
+	 var seriesTwo = []
+	 var seriesThree = []
+	 var seriesFour = []
+
+	dweetio.get_all_dweets_for(name, function(err, dweets){
+		console.log(err)
+	    for(theDweet in dweets.reverse())
+	    {
+	        var dweet = dweets[theDweet];
+
+	        val = dweet.content["temperature"]
+					valTwo = dweet.content["humidity"]
+					valThree = dweet.content["ultrasonic"]
+					valFour = dweet.content["ledfade"]
+			data.push(parseInt(val))
+			dataTwo.push(parseInt(valTwo))
+			dataThree.push(parseInt(valThree))
+			dataFour.push(parseInt(valFour))
+			array_for_cats.push(dweet.created)
+	    }
+		console.log(data)
+
+		series= [{
+	      name:'Temperature',
+	      data: data
+	   }]
+		 seriesTwo= [{
+				 name: 'Humidity',
+				 data: dataTwo
+			}]
+			seriesThree= [{
+					name: 'Ultrasonic',
+					data: dataThree
+			 }]
+			 seriesFour = [{
+					 name: 'LedFade',
+					 data: dataFour
+				}]
+
+	   var json = {};
+	   json.chart = chart;
+	   json.title = title;
+	   json.tooltip = tooltip;
+	   json.xAxis = xAxis;
+	   json.yAxis = yAxis;
+	   json.legend = legend;
+	   json.exporting = exporting;
+	   json.series = series;
+	   json.plotOptions = plotOptions;
+
+		 var jsonTwo = {};
+	   jsonTwo.chart = chartTwo;
+	   jsonTwo.title = titleTwo;
+	   jsonTwo.tooltip = tooltip;
+	   jsonTwo.xAxis = xAxis;
+	   jsonTwo.yAxis = yAxis;
+	   jsonTwo.legend = legend;
+	   jsonTwo.exporting = exporting;
+	   jsonTwo.series = seriesTwo;
+	   jsonTwo.plotOptions = plotOptions;
+
+		 var jsonThree = {};
+		 jsonThree.chart = chartThree;
+		 jsonThree.title = titleThree;
+		 jsonThree.tooltip = tooltip;
+		 jsonThree.xAxis = xAxis;
+		 jsonThree.yAxis = yAxis;
+		 jsonThree.legend = legend;
+		 jsonThree.exporting = exporting;
+		 jsonThree.series = seriesThree;
+		 jsonThree.plotOptions = plotOptions;
+
+		 var jsonFour = {};
+		 jsonFour.chart = chartFour;
+		 jsonFour.title = titleFour;
+		 jsonFour.tooltip = tooltip;
+		 jsonFour.xAxis = xAxis;
+		 jsonFour.yAxis = yAxis;
+		 jsonFour.legend = legend;
+		 jsonFour.exporting = exporting;
+		 jsonFour.series = seriesFour;
+		 jsonFour.plotOptions = plotOptions;
+
+	   Highcharts.setOptions({
+	      global: {
+	         useUTC: false
+	      }
+	   });
+	   $('#container').highcharts(json);
+		chart = $('#container').highcharts()
+		chart.xAxis[0].update({categories: array_for_cats}, true);
+
+		$('#containerTwo').highcharts(jsonTwo);
+	 chartTwo = $('#containerTwo').highcharts()
+	 chartTwo.xAxis[0].update({categories: array_for_cats}, true);
+
+	 $('#containerThree').highcharts(jsonThree);
+	chartThree = $('#containerThree').highcharts()
+	chartThree.xAxis[0].update({categories: array_for_cats}, true);
+
+	$('#containerFour').highcharts(jsonFour);
+ chartFour = $('#containerFour').highcharts()
+ chartFour.xAxis[0].update({categories: array_for_cats}, true);
+	});
+
+	dweetio.listen_for(name, function(dweet){
+	        val = dweet.content["temperature"]
+			console.log("happened")
+			var chart = $('#container').highcharts();
+			chart.series[0].addPoint(parseInt(val));
+			array_for_cats.push(dweet.created)
+			chart.xAxis[0].update({categories: array_for_cats}, true);
+
+				valTwo = dweet.content["humidity"]
+		console.log("happened")
+		var chartTwo = $('#containerTwo').highcharts();
+		chartTwo.series[0].addPoint(parseInt(valTwo));
+		array_for_cats.push(dweet.created)
+		chartTwo.xAxis[0].update({categories: array_for_cats}, true);
+
+				valThree = dweet.content["ultrasonic"]
+		console.log("happened")
+		var chartThree = $('#containerThree').highcharts();
+		chartThree.series[0].addPoint(parseInt(valThree));
+		array_for_cats.push(dweet.created)
+		chartThree.xAxis[0].update({categories: array_for_cats}, true);
+
+		valFour = dweet.content["ledfade"]
+		console.log("happened")
+		var chartFour = $('#containerFour').highcharts();
+		chartFour.series[0].addPoint(parseInt(valFour));
+		array_for_cats.push(dweet.created)
+		chartFour.xAxis[0].update({categories: array_for_cats}, true);
+	});
+
+	//var Temperature = val;
+	//var Humidity = valTwo;
+	//var Ultrasonic = valThree;
+	//var LedFade = valFour;
+
+	//localStorage.setItem('Temperature', JSON.stringify(Temperature));
+	//localStorage.setItem('Humidity', JSON.stringify(Humidity));
+	//localStorage.setItem('Ultrasonic', JSON.stringify(Ultrasonic));
+	//localStorage.setItem('LedFade', JSON.stringify(LedFade));
+
+
+});
+
+
+</script>
+</body>
+</html>
